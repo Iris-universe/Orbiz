@@ -1,6 +1,6 @@
 # Orbiz (version Rust)
 
-Orbe flottant pour Windows : un clic ouvre un anneau de raccourcis ; chat IA (API OpenAI) qui pilote le navigateur IrisBrowser et les apps compatibles iris-link ; notes ; mini navigateur. **Rust + Tauri 2**, pages HTML/JS dans `ui/`. Lancement : `Orbiz.vbs` (lance `target\release\orbiz.exe`). Ne pas lancer l'exe pour tester sans demander à l'utilisateur.
+Orbe flottant pour Windows : un clic ouvre un anneau de raccourcis ; chat IA (API OpenAI) qui pilote le navigateur IrisBrowser et les apps compatibles iris-link ; notes ; mini navigateur. **Rust + Tauri 2**, pages HTML/JS dans `ui/`. Lancement : `Orbiz.vbs` (lance `target\release\orbiz.exe`, aussi au démarrage de Windows via `HKCU\…\Run\Orbiz`). L'ancienne version Electron est dans `../Orbiz-electron` (ne plus la modifier).
 
 ## Données (`%APPDATA%\orbiz`, même dossier que l'ancienne version Electron)
 - `actions.json` : **boutons de l'orbe** (créé avec les boutons par défaut de `src/actions.rs` ; les raccourcis perso s'ajoutent ici, jamais dans le code). Types : `overlay`, `iris`, `irisbrowser`, `exe`, `open`.
