@@ -1,0 +1,124 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: transparent !important;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: #e0e0ee;
+  margin: 0; padding: 0;
+}
+
+#shell {
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #0e0b1a;
+  border: 1px solid rgba(139,92,246,0.25);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+#chrome {
+  flex-shrink: 0;
+  background: #0e0b1a;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  -webkit-app-region: drag;
+}
+
+#nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  -webkit-app-region: drag;
+}
+
+.nav-btn {
+  width: 28px; height: 28px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(255,255,255,0.45);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-app-region: no-drag;
+  transition: background .15s, color .15s;
+  flex-shrink: 0;
+}
+.nav-btn:hover {
+  background: rgba(255,255,255,0.08);
+  color: #e0e0ee;
+}
+.nav-btn:disabled {
+  color: rgba(255,255,255,0.15);
+  cursor: default;
+}
+.nav-btn.close:hover {
+  background: rgba(239,68,68,0.2);
+  color: #ef4444;
+}
+
+#url-bar {
+  flex: 1;
+  height: 30px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 15px;
+  padding: 0 14px;
+  color: #e0e0ee;
+  font-size: 12px;
+  outline: none;
+  -webkit-app-region: no-drag;
+  transition: border-color .2s, background .2s;
+}
+#url-bar:focus {
+  border-color: rgba(139,92,246,0.4);
+  background: rgba(255,255,255,0.09);
+}
+#url-bar::placeholder {
+  color: rgba(255,255,255,0.3);
+}
+
+#opacity-slider {
+  width: 48px;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255,255,255,0.12);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  flex-shrink: 0;
+}
+#opacity-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #8b5cf6;
+  cursor: pointer;
+  border: none;
+}
+#opacity-slider:hover::-webkit-slider-thumb {
+  background: #a78bfa;
+}
+
+#view-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 0 14px 14px;
+}
+
+#webview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0 0 13px 13px;
+}

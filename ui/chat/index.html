@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' ipc: http://ipc.localhost; style-src 'self' 'unsafe-inline'">
+  <title>Orbiz Chat</title>
+  <link rel="stylesheet" href="chat.css">
+  <link rel="stylesheet" href="../overlay.css">
+</head>
+<body>
+  <div id="panel">
+    <header>
+      <div class="dot"></div>
+      <div class="title">
+        <strong>ChatGPT</strong>
+        <span id="model-name"></span>
+      </div>
+      <input class="op-slider" id="op-slider" type="range" min="0" max="0.95" step="0.05" title="Transparence">
+      <button class="icon" id="btn-new" title="Nouvelle conversation">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <button class="icon" id="btn-settings" title="Réglages">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </button>
+      <button class="icon" id="btn-close" title="Fermer (Échap)">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+
+    <main id="messages">
+      <div id="empty">
+        <div class="empty-orb"></div>
+        <p>Pose ta question…</p>
+        <small>Entrée pour envoyer · Maj+Entrée pour un retour à la ligne</small>
+      </div>
+    </main>
+
+    <form id="composer">
+      <textarea id="input" rows="1" placeholder="Écris un message…"></textarea>
+      <button type="submit" id="btn-send" title="Envoyer">
+        <svg class="send" viewBox="0 0 24 24"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+        <svg class="stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>
+      </button>
+    </form>
+
+    <section id="settings" hidden>
+      <h2>Réglages</h2>
+      <label>
+        Clé API OpenAI
+        <input id="set-key" type="password" placeholder="sk-…" autocomplete="off" spellcheck="false">
+        <small id="key-status"></small>
+      </label>
+      <label>
+        Modèle
+        <select id="set-model"></select>
+        <small id="model-price"></small>
+      </label>
+      <label>
+        Limite de coût par message ($)
+        <input id="set-limit" type="number" min="0" step="0.05">
+        <small>L'IA s'arrête et demande avant de dépasser ce montant. 0 = pas de limite.</small>
+      </label>
+      <div id="usage">
+        <div class="usage-head">
+          <span>Dépenses estimées</span>
+          <button type="button" id="btn-reset-usage" class="link">Remettre à zéro</button>
+        </div>
+        <div class="usage-stats">
+          <div><strong id="u-today">–</strong><small>aujourd'hui</small></div>
+          <div><strong id="u-month">–</strong><small>ce mois-ci</small></div>
+          <div><strong id="u-total">–</strong><small id="u-total-label">total</small></div>
+        </div>
+        <ul id="u-models"></ul>
+        <small class="usage-note">Calculé dans Orbiz à partir des tokens de chaque réponse. Ne compte pas les autres usages de ta clé. Facture réelle : <a href="https://platform.openai.com/usage" target="_blank">platform.openai.com/usage</a></small>
+      </div>
+      <label class="opacity-field">
+        Opacité du fond
+        <input id="set-opacity" type="range" min="0" max="0.95" step="0.05">
+      </label>
+      <p id="settings-error"></p>
+      <div class="row">
+        <a href="https://platform.openai.com/api-keys" target="_blank">Obtenir une clé API</a>
+        <button type="button" id="btn-save" class="primary">Enregistrer</button>
+      </div>
+    </section>
+  </div>
+  <script src="../bridge.js"></script>
+  <script src="vendor/katex.min.js"></script>
+  <script src="markdown.js"></script>
+  <script src="chat.js"></script>
+</body>
+</html>

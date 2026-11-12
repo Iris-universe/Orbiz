@@ -1,0 +1,13 @@
+/* Curseur de transparence commun aux fenêtres d'Orbiz (dans la barre du haut). */
+.op-slider {
+  width: 52px; height: 4px; flex-shrink: 0;
+  -webkit-appearance: none; appearance: none;
+  background: rgba(255,255,255,0.14); border-radius: 2px;
+  outline: none; cursor: pointer; margin: 0 4px;
+  -webkit-app-region: no-drag;
+}
+.op-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  background: #8b5cf6; border: none; cursor: pointer;
+}
+.op-slider:hover::-webkit-slider-thumb { background: #a78bfa; }

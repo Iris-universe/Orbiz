@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' ipc: http://ipc.localhost; style-src 'self' 'unsafe-inline'">
+  <title>Orbiz</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="stage">
+    <div id="squash">
+      <div id="orb" class="hit">
+        <div class="glass"></div>
+        <div class="core"></div>
+        <div class="face">
+          <div class="eye" id="eye-l">
+            <div class="iris"><div class="pupil"></div><div class="glint"></div></div>
+          </div>
+          <div class="eye" id="eye-r">
+            <div class="iris"><div class="pupil"></div><div class="glint"></div></div>
+          </div>
+          <div class="cheek" id="cheek-l"></div>
+          <div class="cheek" id="cheek-r"></div>
+          <div class="mouth" id="mouth"></div>
+        </div>
+        <div class="shine"></div>
+        <div id="particles"></div>
+        <div id="ring"></div>
+        <div id="center"><span id="label">Orbiz</span></div>
+      </div>
+    </div>
+  </div>
+  <script src="../bridge.js"></script>
+  <script src="icons.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>

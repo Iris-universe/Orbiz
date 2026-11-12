@@ -1,0 +1,147 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root { --a: .92; /* opacité du fond, réglable (curseur de la barre du haut) */ }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  user-select: none;
+  color: #e0e0ee;
+}
+
+#panel {
+  position: absolute; inset: 8px;
+  background: rgba(18, 16, 40, var(--a));
+  border: 1px solid rgba(255,255,255,0.08);
+  text-shadow: 0 1px 3px rgba(0,0,0,calc(.9 - var(--a) * .9));
+  border-radius: 16px;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: blur(24px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+header {
+  display: flex; align-items: center;
+  height: 44px; padding: 0 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  -webkit-app-region: drag;
+  flex-shrink: 0;
+}
+
+header .title {
+  flex: 1; margin-left: 10px;
+  font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,0.85);
+}
+
+header .icon {
+  -webkit-app-region: no-drag;
+  width: 28px; height: 28px;
+  background: none; border: none;
+  color: rgba(255,255,255,0.4);
+  border-radius: 6px; cursor: pointer;
+  display: grid; place-items: center;
+}
+header .icon:hover { background: rgba(255,255,255,0.08); color: #e0e0ee; }
+header .icon svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.sidebar {
+  display: flex; flex-direction: column;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  max-height: 200px; overflow-y: auto; flex-shrink: 0;
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+.note-item {
+  display: flex; align-items: center;
+  padding: 8px 12px; cursor: pointer;
+  border: none; background: none; color: #e0e0ee;
+  font: 12px "Segoe UI", system-ui, sans-serif;
+  text-align: left; width: 100%;
+  border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+.note-item:hover { background: rgba(255,255,255,0.05); }
+.note-item.active { background: rgba(124,110,240,0.12); border-left-color: #7c6ef0; }
+
+.note-item .note-title {
+  flex: 1; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+}
+.note-item .note-date {
+  font-size: 10px; color: rgba(255,255,255,0.25);
+  margin-left: 8px; flex-shrink: 0;
+}
+.note-item .note-del {
+  width: 20px; height: 20px;
+  background: none; border: none;
+  color: rgba(255,255,255,0.2); cursor: pointer;
+  border-radius: 4px; display: grid; place-items: center;
+  font-size: 13px; margin-left: 4px; flex-shrink: 0;
+  opacity: 0; transition: opacity 0.15s;
+}
+.note-item:hover .note-del { opacity: 1; }
+.note-item .note-del:hover { background: rgba(239,68,68,0.2); color: #ef4444; }
+
+.toolbar {
+  display: flex; align-items: center;
+  padding: 4px 8px; gap: 2px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.toolbar button {
+  width: 28px; height: 28px;
+  background: none; border: none;
+  color: rgba(255,255,255,0.45); cursor: pointer;
+  border-radius: 6px; display: grid; place-items: center;
+  font-size: 14px;
+}
+.toolbar button:hover { background: rgba(255,255,255,0.08); color: #e0e0ee; }
+.toolbar .sep { width: 1px; height: 18px; background: rgba(255,255,255,0.08); margin: 0 4px; }
+
+.editor-area {
+  flex: 1; display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+#note-title {
+  background: none; border: none; outline: none;
+  padding: 12px 16px 4px;
+  font-size: 16px; font-weight: 600;
+  color: #e0e0ee;
+  font-family: inherit;
+}
+#note-title::placeholder { color: rgba(255,255,255,0.25); }
+
+#note-body {
+  flex: 1;
+  background: none; border: none; outline: none;
+  padding: 8px 16px 16px;
+  font-size: 13px; line-height: 1.65;
+  color: rgba(255,255,255,0.8);
+  font-family: inherit;
+  resize: none;
+  overflow-y: auto;
+}
+#note-body::placeholder { color: rgba(255,255,255,0.2); }
+#note-body::-webkit-scrollbar { width: 4px; }
+#note-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+.empty-state {
+  flex: 1; display: grid; place-items: center;
+  color: rgba(255,255,255,0.2); font-size: 13px;
+  text-align: center; padding: 20px;
+}
+
+#save-status {
+  font-size: 10px; color: rgba(255,255,255,0.2);
+  margin-left: auto; padding-right: 4px;
+}
+#save-status.saving { color: #f0c040; }
+#save-status.saved { color: #4caf50; }

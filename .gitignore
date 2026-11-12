@@ -1,0 +1,11 @@
+target/
+gen/
+node_modules/
+dist/
+build/
+__pycache__/
+*.xip
+*.log
+.env
+CLAUDE.local.md
+.cargo/

@@ -1,0 +1,682 @@
+[
+ {
+  "type": "function",
+  "name": "navigate",
+  "description": "Ouvre une URL dans le navigateur. Ajoute https:// si absent.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "url": {
+     "type": "string",
+     "description": "URL à ouvrir"
+    }
+   },
+   "required": [
+    "url"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "get_page_content",
+  "description": "Récupère le contenu texte de la page courante (URL, titre, texte visible).",
+  "parameters": {
+   "type": "object",
+   "properties": {}
+  }
+ },
+ {
+  "type": "function",
+  "name": "list_interactive_elements",
+  "description": "Liste les éléments interactifs visibles (liens, boutons, champs, etc.) avec leur index, tag, texte, id.",
+  "parameters": {
+   "type": "object",
+   "properties": {}
+  }
+ },
+ {
+  "type": "function",
+  "name": "click",
+  "description": "Clique un élément. Utilise index (de list_interactive_elements), selector (CSS), ou text (recherche par texte visible).",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "index": {
+     "type": "integer",
+     "description": "Index de l'élément (de list_interactive_elements)"
+    },
+    "selector": {
+     "type": "string",
+     "description": "Sélecteur CSS"
+    },
+    "text": {
+     "type": "string",
+     "description": "Texte visible de l'élément à cliquer"
+    }
+   }
+  }
+ },
+ {
+  "type": "function",
+  "name": "type_text",
+  "description": "Saisit du texte dans un champ. Utilise le sélecteur CSS ou [data-orbiz=\"N\"] pour cibler le champ.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "selector": {
+     "type": "string",
+     "description": "Sélecteur CSS du champ (ex: \"#search\", \"[data-orbiz=\\\"3\\\"]\", \"input[name=\\\"q\\\"]\")"
+    },
+    "text": {
+     "type": "string",
+     "description": "Texte à saisir"
+    },
+    "clear": {
+     "type": "boolean",
+     "description": "Effacer le champ avant de taper (défaut: true)"
+    }
+   },
+   "required": [
+    "selector",
+    "text"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "select_option",
+  "description": "Sélectionne une option dans un menu déroulant (<select>).",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "selector": {
+     "type": "string",
+     "description": "Sélecteur CSS du <select>"
+    },
+    "value": {
+     "type": "string",
+     "description": "Valeur ou texte visible de l'option"
+    }
+   },
+   "required": [
+    "selector",
+    "value"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "scroll",
+  "description": "Défile la page.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "direction": {
+     "type": "string",
+     "enum": [
+      "up",
+      "down",
+      "top",
+      "bottom"
+     ],
+     "description": "Direction"
+    }
+   },
+   "required": [
+    "direction"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "go_back",
+  "description": "Revient à la page précédente dans l'historique.",
+  "parameters": {
+   "type": "object",
+   "properties": {}
+  }
+ },
+ {
+  "type": "function",
+  "name": "press_key",
+  "description": "Appuie sur une touche (Enter, Tab, Escape, etc.) dans l'élément actif.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "key": {
+     "type": "string",
+     "description": "Nom de la touche"
+    }
+   },
+   "required": [
+    "key"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "show_browser",
+  "description": "Affiche la fenêtre du navigateur au premier plan.",
+  "parameters": {
+   "type": "object",
+   "properties": {}
+  }
+ },
+ {
+  "type": "function",
+  "name": "hide_browser",
+  "description": "Cache la fenêtre du navigateur.",
+  "parameters": {
+   "type": "object",
+   "properties": {}
+  }
+ },
+ {
+  "type": "function",
+  "name": "execute_javascript",
+  "description": "Exécute du JavaScript dans la page courante avec la sémantique de la console DevTools (await au niveau racine, $0, $$(), getEventListeners(), pas de restriction CSP). Retourne la valeur de la dernière expression (sérialisée) et un handle si c'est un objet. persist:true réapplique le code à chaque visite du site.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "code": {
+     "type": "string",
+     "description": "Code JS à exécuter"
+    },
+    "persist": {
+     "type": "boolean",
+     "description": "Réappliquer ce code à chaque chargement de ce site (défaut false)"
+    },
+    "run_at": {
+     "type": "string",
+     "enum": [
+      "document_start",
+      "document_idle"
+     ],
+     "description": "Avec persist : document_start = avant tous les scripts de la page (pour intercepter/monkey-patcher), document_idle = après chargement (défaut)"
+    },
+    "description": {
+     "type": "string",
+     "description": "Description lisible de la modification (si persist)"
+    }
+   },
+   "required": [
+    "code"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "list_scripts",
+  "description": "Liste les scripts JS chargés dans la page courante (et ses iframes), du plus gros au plus petit, avec leur script_id.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "url_filter": {
+     "type": "string",
+     "description": "Garder les scripts dont l'URL contient ce texte"
+    },
+    "include_anonymous": {
+     "type": "boolean",
+     "description": "Inclure les scripts sans URL (eval, inline dynamiques)"
+    }
+   }
+  }
+ },
+ {
+  "type": "function",
+  "name": "search_scripts",
+  "description": "Recherche un texte ou une regex (syntaxe Python) dans le code source de tous les scripts chargés de la page. Retourne script_id, offset, ligne et un extrait autour de chaque occurrence.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "query": {
+     "type": "string",
+     "description": "Texte exact ou regex à chercher"
+    },
+    "regex": {
+     "type": "boolean",
+     "description": "query est une regex Python (défaut false)"
+    },
+    "url_filter": {
+     "type": "string",
+     "description": "Limiter aux scripts dont l'URL contient ce texte"
+    },
+    "max_results": {
+     "type": "integer",
+     "description": "Nombre de résultats (5 à 10 conseillé)"
+    }
+   },
+   "required": [
+    "query"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "get_script_source",
+  "description": "Lit une portion du code source d'un script chargé (par script_id ou url).",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "script_id": {
+     "type": "string",
+     "description": "Identifiant renvoyé par list_scripts/search_scripts (ex. s1:42)"
+    },
+    "url": {
+     "type": "string",
+     "description": "Ou : URL (ou partie d'URL) du script"
+    },
+    "around": {
+     "type": "string",
+     "description": "Centrer l'extrait sur la première occurrence de ce texte"
+    },
+    "offset": {
+     "type": "integer",
+     "description": "Position de départ (caractères)"
+    },
+    "length": {
+     "type": "integer",
+     "description": "Nombre de caractères (1500 à 3000 conseillé, 6000 max utile)"
+    }
+   }
+  }
+ },
+ {
+  "type": "function",
+  "name": "patch_script",
+  "description": "Réécrit le code d'un script AU NIVEAU RÉSEAU, avant qu'il ne s'exécute (find/replace), puis recharge la page. Fonctionne sur le code minifié et les closures privées : c'est l'outil pour changer durablement le comportement d'un jeu ou d'un site. Retourne les statistiques d'application après rechargement.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "url_pattern": {
+     "type": "string",
+     "description": "URL du script avec jokers * et ? (ex. *snake_arcade*.js*, *://www.example.com/app.*.js)"
+    },
+    "find": {
+     "type": "string",
+     "description": "Texte exact à remplacer (copié depuis get_script_source), ou regex si regex=true"
+    },
+    "replace": {
+     "type": "string",
+     "description": "Texte de remplacement (avec regex : \\1 ou \\g<1> pour les groupes)"
+    },
+    "regex": {
+     "type": "boolean",
+     "description": "find est une regex Python (défaut false)"
+    },
+    "resource_type": {
+     "type": "string",
+     "enum": [
+      "Script",
+      "Document",
+      "Stylesheet",
+      "XHR",
+      "Fetch",
+      "Any"
+     ],
+     "description": "Type de ressource (défaut Script ; Document pour les scripts inline dans le HTML)"
+    },
+    "description": {
+     "type": "string",
+     "description": "Description lisible (affichée à l'utilisateur)"
+    },
+    "persist": {
+     "type": "boolean",
+     "description": "Conserver le patch après redémarrage (défaut true)"
+    },
+    "reload": {
+     "type": "boolean",
+     "description": "Recharger la page pour appliquer (défaut true)"
+    }
+   },
+   "required": [
+    "url_pattern",
+    "find",
+    "replace",
+    "description"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "live_edit_script",
+  "description": "Modifie à chaud le code d'un script déjà chargé, sans recharger (Debugger.setScriptSource). Les nouvelles exécutions des fonctions utilisent le nouveau code ; l'état existant est conservé. Non persistant.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "script_id": {
+     "type": "string",
+     "description": "Identifiant du script (ex. s1:42)"
+    },
+    "url": {
+     "type": "string",
+     "description": "Ou : URL (ou partie) du script"
+    },
+    "find": {
+     "type": "string",
+     "description": "Texte exact (ou regex) à remplacer"
+    },
+    "replace": {
+     "type": "string",
+     "description": "Remplacement"
+    },
+    "regex": {
+     "type": "boolean",
+     "description": "find est une regex Python"
+    }
+   },
+   "required": [
+    "find",
+    "replace"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "inspect_object",
+  "description": "Inspecte un objet ou une fonction de la page. Pour une fonction : son code, son emplacement (script_id/ligne) et les variables PRIVÉES de ses closures (avec handles pour les objets). Pour un objet : ses propriétés.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "expression": {
+     "type": "string",
+     "description": "Expression JS qui renvoie l'objet/la fonction (ex. getEventListeners(document).keydown[0].listener)"
+    },
+    "handle": {
+     "type": "string",
+     "description": "Ou : handle renvoyé précédemment (ex. h12)"
+    },
+    "names": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "Ne garder que ces noms de variables/propriétés (les portées de module en contiennent des centaines)"
+    },
+    "limit": {
+     "type": "integer",
+     "description": "Max d'entrées par portée (défaut 40)"
+    }
+   }
+  }
+ },
+ {
+  "type": "function",
+  "name": "call_function_on",
+  "description": "Appelle une fonction JS avec this = l'objet désigné par un handle (obtenu via inspect_object ou execute_javascript). Permet de lire/modifier un objet privé d'une closure ou de l'exposer : function(){ this.vitesse = 1; window.__etat = this; return this }.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "handle": {
+     "type": "string",
+     "description": "Handle de l'objet (ex. h12)"
+    },
+    "function_declaration": {
+     "type": "string",
+     "description": "Déclaration de fonction JS, ex. function(){ return Object.keys(this) }"
+    }
+   },
+   "required": [
+    "handle",
+    "function_declaration"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "get_console",
+  "description": "Lit les messages de la console et les exceptions de la page courante (utile pour vérifier qu'un patch ne casse rien).",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "clear": {
+     "type": "boolean",
+     "description": "Vider après lecture"
+    },
+    "limit": {
+     "type": "integer",
+     "description": "Nombre max de messages (défaut 50)"
+    }
+   }
+  }
+ },
+ {
+  "type": "function",
+  "name": "reload_page",
+  "description": "Recharge la page courante (en ignorant le cache par défaut).",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "bypass_cache": {
+     "type": "boolean",
+     "description": "Ignorer le cache (défaut true)"
+    }
+   }
+  }
+ },
+ {
+  "type": "function",
+  "name": "list_modifications",
+  "description": "Liste les patchs de scripts (avec statistiques d'application), les scripts persistants du site courant et les plugins installés.",
+  "parameters": {
+   "type": "object",
+   "properties": {}
+  }
+ },
+ {
+  "type": "function",
+  "name": "remove_modification",
+  "description": "Supprime un patch de script ou un script persistant. Recharge ensuite la page pour revenir à l'original.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "kind": {
+     "type": "string",
+     "enum": [
+      "patch",
+      "userscript",
+      "all_patches"
+     ],
+     "description": "Type de modification"
+    },
+    "id": {
+     "type": "string",
+     "description": "Identifiant (sauf pour all_patches)"
+    }
+   },
+   "required": [
+    "kind"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "get_plugin_api",
+  "description": "Renvoie la documentation de l'API de plugins d'une page interne du navigateur (actuellement : 'pdf', le lecteur/éditeur PDF) et la liste des plugins installés. À lire avant create_plugin.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "target": {
+     "type": "string",
+     "enum": [
+      "pdf"
+     ],
+     "description": "Page interne ciblée"
+    }
+   }
+  }
+ },
+ {
+  "type": "function",
+  "name": "get_internal_source",
+  "description": "Lit le code source (HTML/CSS/JS) d'une page interne du navigateur, par lignes numérotées ou par recherche. Sert à écrire un plugin de type 'patch'.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "target": {
+     "type": "string",
+     "enum": [
+      "pdf"
+     ]
+    },
+    "query": {
+     "type": "string",
+     "description": "Texte à chercher (renvoie les lignes autour de chaque occurrence)"
+    },
+    "offset": {
+     "type": "integer",
+     "description": "Première ligne (1-based) si pas de query"
+    },
+    "length": {
+     "type": "integer",
+     "description": "Nombre de lignes (défaut 150, max 400)"
+    }
+   }
+  }
+ },
+ {
+  "type": "function",
+  "name": "create_plugin",
+  "description": "Crée ou remplace (même name) un plugin persistant pour une page interne du navigateur (ex. ajouter une fonction à l'éditeur PDF). type 'script' : code JS exécuté avec l'objet IrisPDF. type 'patch' : find/replace sur la source du lecteur. Les PDF ouverts sont rechargés et la réponse contient status, errors et syntax_error.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "target": {
+     "type": "string",
+     "enum": [
+      "pdf"
+     ]
+    },
+    "name": {
+     "type": "string",
+     "description": "Nom court unique (lettres, chiffres, - _)"
+    },
+    "type": {
+     "type": "string",
+     "enum": [
+      "script",
+      "patch"
+     ],
+     "description": "Défaut script"
+    },
+    "description": {
+     "type": "string",
+     "description": "Ce que fait le plugin (affiché à l'utilisateur)"
+    },
+    "code": {
+     "type": "string",
+     "description": "type script : corps JS du plugin (reçoit IrisPDF)"
+    },
+    "find": {
+     "type": "string",
+     "description": "type patch : texte exact de la source à remplacer"
+    },
+    "replace": {
+     "type": "string",
+     "description": "type patch : remplacement"
+    },
+    "regex": {
+     "type": "boolean",
+     "description": "type patch : find est une regex Python"
+    }
+   },
+   "required": [
+    "target",
+    "name",
+    "description"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "list_plugins",
+  "description": "Liste les plugins installés et, si un PDF est ouvert dans l'onglet actif, leur état d'exécution et leurs erreurs.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "target": {
+     "type": "string",
+     "enum": [
+      "pdf"
+     ]
+    },
+    "include_code": {
+     "type": "boolean",
+     "description": "Inclure le code des plugins script"
+    }
+   }
+  }
+ },
+ {
+  "type": "function",
+  "name": "remove_plugin",
+  "description": "Supprime un plugin.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "target": {
+     "type": "string",
+     "enum": [
+      "pdf"
+     ]
+    },
+    "name": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "name"
+   ]
+  }
+ },
+ {
+  "type": "function",
+  "name": "modify_page",
+  "description": "Modifie la page : injecter du CSS, changer le HTML/texte d'un élément, modifier ses attributs.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "css": {
+     "type": "string",
+     "description": "CSS à injecter (ajouté comme <style>)"
+    },
+    "selector": {
+     "type": "string",
+     "description": "Sélecteur CSS de l'élément à modifier"
+    },
+    "innerHTML": {
+     "type": "string",
+     "description": "Nouveau innerHTML"
+    },
+    "textContent": {
+     "type": "string",
+     "description": "Nouveau textContent"
+    },
+    "setAttribute": {
+     "type": "object",
+     "description": "Attributs à définir {nom: valeur}",
+     "additionalProperties": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ },
+ {
+  "type": "function",
+  "name": "wait",
+  "description": "Attend un nombre de secondes (utile après un clic qui déclenche un chargement). Max 10s.",
+  "parameters": {
+   "type": "object",
+   "properties": {
+    "seconds": {
+     "type": "number",
+     "description": "Secondes à attendre"
+    }
+   },
+   "required": [
+    "seconds"
+   ]
+  }
+ }
+]

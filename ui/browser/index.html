@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; connect-src 'self' ipc: http://ipc.localhost; style-src 'self' 'unsafe-inline'">
+  <title>Iris Mini</title>
+  <link rel="stylesheet" href="browser.css">
+  <link rel="stylesheet" href="../overlay.css">
+</head>
+<body>
+  <div id="shell">
+    <div id="chrome">
+      <div id="nav">
+        <button id="back-btn" class="nav-btn" title="Precedent">◀</button>
+        <button id="fwd-btn" class="nav-btn" title="Suivant">▶</button>
+        <input id="url-bar" type="text" placeholder="Adresse web" spellcheck="false">
+        <button id="go-btn" class="nav-btn" title="Aller">↵</button>
+        <input class="op-slider" id="opacity-slider" type="range" min="15" max="100" value="100" title="Transparence">
+        <button id="close-btn" class="nav-btn close" title="Fermer">✕</button>
+      </div>
+    </div>
+    <div id="view-container">
+      
+    </div>
+  </div>
+  <script src="../bridge.js"></script>
+  <script src="browser.js"></script>
+</body>
+</html>
